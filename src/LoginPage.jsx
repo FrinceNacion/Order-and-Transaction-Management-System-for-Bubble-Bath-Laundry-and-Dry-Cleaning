@@ -1,15 +1,38 @@
-
-
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
+    const navigate = useNavigate();
+    const loginEndpoint = 'http://localhost/bubble-bath-backend/login.php';
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Handle login logic here
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        };
+        fetch(loginEndpoint, requestOptions)
+            .then(async response => {
+                const text = await response.text();
+                return text ? JSON.parse(text) : {};
+            })
+            .then(data => {
+                if (data.success) {
+                    // Handle successful login (e.g., redirect to dashboard)
+                    console.log('Login successful:', data);
+                } else {
+                    // Handle login failure (e.g., show error message)
+                    console.error('Login failed:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+        });
         console.log('Login attempt:', { email, password });
     };
 
@@ -57,7 +80,7 @@ function LoginPage() {
                                         Sign In
                                     </button>
                                     <div className="d-flex justify-content-center">
-                                        <small className="text-muted mt-2">Don't have an account? <Link to="/register" className="text-decoration-none">Sign up here</Link></small>
+                                        <small className="text-muted mt-2">Doesn't have an account? <Link to="/register" className="text-decoration-none">Sign up here</Link></small>
                                     </div>
                                 </div>
                             </form>
