@@ -11,6 +11,10 @@ import CustomersPage from './CustomersPage';
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <LoginPage />,
+  },
+  {
     path: "/login",
     element: <LoginPage />,
   },
