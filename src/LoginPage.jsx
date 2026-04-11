@@ -9,29 +9,32 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const logUserIn = (isSuccess) => {
+        if (isSuccess) {
+            navigate('/dashboard');
+        } else {
+            setError('Invalid email or password. Please try again.');
+        }
+    };
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
-        // Handle login logic here
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        };
+        
         fetch(loginEndpoint, requestOptions)
             .then(async response => {
                 const text = await response.text();
                 return text ? JSON.parse(text) : {};
             })
             .then(data => {
-                if (data.success) {
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    navigate('/dashboard', {state: { user: data.user }});
-                } else {
-                    // Handle login failure (show error message)
-                    setError(data.error);
-                }
-            })
+                logUserIn(data.success);
+            })  
             .catch(error => {
                 setError('An error occurred during login.');
             });
