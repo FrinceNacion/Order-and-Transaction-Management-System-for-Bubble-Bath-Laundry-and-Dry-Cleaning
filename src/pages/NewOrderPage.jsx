@@ -1,4 +1,4 @@
-
+import CreateOrderForm from "../components/CreateOrderForm";
 function NewOrderPage() {
 
     return (
@@ -8,7 +8,7 @@ function NewOrderPage() {
                 <p className="text-secondary small mb-4">Add garment details and create a new order.</p>
             </div>
             <div className="d-flex flex-column">
-                
+                <CreateOrderForm />
             </div>
         </main>
     )
