@@ -1,5 +1,5 @@
 import react from "react";
-function GarmentForm() {
+function GarmentForm({ garments, setGarments }) {
     const [garmentType, setGarmentType] = react.useState("");
     const [garmentService, setGarmentService] = react.useState("");
     const [garmentQty, setGarmentQty] = react.useState("");
@@ -7,7 +7,9 @@ function GarmentForm() {
     const [garmentSubtotal, setGarmentSubtotal] = react.useState("");
     const [garmentNotes, setGarmentNotes] = react.useState("");
 
-    const [garments, setGarments] = react.useState([]);
+    const handleRemoveGarment = (id) => {
+        setGarments(garments.filter(garment => garment.id !== id));
+    };
 
     const handleGarmentPrice = (e) => {
         if (e.target.value.length > 1 && e.target.value[0] === "0") {
